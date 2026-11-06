@@ -1,0 +1,227 @@
+@font-face {
+  font-family: "Jost";
+  src: url("/fonts/jost.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* the living artwork in the opening section */
+.artwork-live {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.artwork-live.is-live { opacity: 1; }
+.canvas.quiet { cursor: none; }
+.canvas-controls { left: 0; right: 0; transform: none; padding: 0 14px; flex-direction: column; gap: 12px; }
+.canvas-buttons { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.artwork-stages { display: flex; justify-content: center; gap: 2px; }
+.artwork-stage {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.artwork-stage::after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fffdf2;
+  opacity: 0.3;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.artwork-stage.on::after { opacity: 1; transform: scale(1.5); }
+.artwork-stage:focus-visible { outline-offset: 0; }
+.sound-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 17px;
+  border: 1px solid rgb(233 229 216 / 25%);
+  border-radius: 0;
+  color: #fffdf2;
+  background: rgb(13 17 14 / 76%);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .16em;
+  white-space: nowrap;
+}
+.sound-toggle::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  background: transparent;
+  transition: background 0.4s ease;
+}
+.sound-toggle[aria-pressed="true"]::before { background: currentColor; }
+.sound-toggle:hover { background: rgb(35 40 31 / 90%); }
+.face-toggle[hidden] { display: none; }
+.artwork-hint {
+  position: absolute;
+  top: max(26px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(233 229 216 / 55%);
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: .16em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  pointer-events: none;
+}
+.artwork-hint.show { opacity: 1; }
+@media (max-width: 600px) {
+  .artwork-hint { font-size: 9px; white-space: normal; text-align: center; width: 82vw; }
+  .sound-toggle { padding: 0 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .artwork-live, .artwork-stages, .artwork-hint, .sound-toggle { display: none; }
+}
+
+/* one voice for the small words: heavy geometric capitals, wide apart */
+.archive-cue, .sound-toggle, .artwork-hint, .archive h2, .archive-note, .biography-label, figcaption, .viewer-close, #viewer-count, .viewer-credit {
+  font-family: "Jost", Helvetica, Arial, sans-serif;
+}
+.archive-cue, .sound-toggle, .archive h2, .archive-note, .biography-label, .viewer-close { font-weight: 600; letter-spacing: .24em; }
+.artwork-hint { font-weight: 500; letter-spacing: .3em; }
+figcaption { font-weight: 500; letter-spacing: .1em; text-transform: uppercase; font-size: 9px; }
+figcaption span:last-child { font-family: "Jost", Helvetica, Arial, sans-serif; letter-spacing: .2em; }
+
+/* the title card: the name of the painting, cut in three bands, the middle one slipped */
+.title-card {
+  position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-40%);
+  display: flex; flex-direction: column; align-items: center; gap: clamp(16px, 2.4vw, 30px);
+  padding: 0 16px; pointer-events: none; opacity: 0; transition: opacity 1.6s ease; z-index: 2;
+}
+.title-card.show { opacity: 1; }
+.title-over {
+  font: 600 clamp(9px, 0.8vw, 12px)/1 "Jost", Helvetica, Arial, sans-serif;
+  letter-spacing: .46em; padding-left: .46em; text-transform: uppercase; text-align: center;
+  color: rgb(255 253 242 / 88%);
+  text-shadow: 0 0 14px rgb(0 0 0 / 70%), 0 0 3px rgb(0 0 0 / 60%);
+}
+.title-words { display: flex; flex-wrap: wrap; justify-content: center; column-gap: clamp(14px, 2.6vw, 52px); row-gap: 0; }
+.title-word {
+  position: relative; display: inline-block;
+  font: 800 clamp(44px, 7.6vw, 150px)/1 "Jost", Helvetica, Arial, sans-serif;
+  letter-spacing: .05em; text-transform: uppercase; color: #fffdf2;
+  text-shadow: 0 0 30px rgb(0 0 0 / 35%);
+}
+.band { display: block; white-space: nowrap; }
+.band-top, .band-mid { position: absolute; inset: 0; }
+.band-top { clip-path: inset(0 0 61% 0); }
+.band-mid { clip-path: inset(41% 0 35% 0); transform: translateX(.06em); }
+.band-base { clip-path: inset(67% 0 0 0); }
+.title-word i { font-style: normal; display: inline-block; transform: scaleX(-1); }
+.sliced-in .title-word i { transform: scaleX(1); }
+
+/* the photo's name in the viewer, same cut */
+#viewer-title {
+  position: relative; display: inline-block;
+  font: 800 26px/1 "Jost", Helvetica, Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase;
+  color: transparent;
+  background: linear-gradient(to bottom, transparent 41%, #e9e5d8 41%, #e9e5d8 65%, transparent 65%);
+  -webkit-background-clip: text; background-clip: text;
+  transform: translateX(.05em);
+}
+#viewer-title::before, #viewer-title::after {
+  content: attr(data-text); position: absolute; left: 0; top: 0; color: #e9e5d8; transform: translateX(-.05em); white-space: nowrap;
+}
+#viewer-title::before { clip-path: inset(0 0 61% 0); }
+#viewer-title::after { clip-path: inset(67% 0 0 0); }
+
+@media (max-width: 600px) {
+  .title-word { font-size: 16vw; }
+  .title-over { letter-spacing: .34em; padding-left: .34em; }
+  .title-card { transform: translateY(-46%); }
+}
+.title-card.flood { gap: 0; }
+.title-card.flood .title-word { font-size: clamp(46px, 8vw, 160px); text-shadow: 0 0 40px rgb(0 0 0 / 45%); }
+.title-card.flood .title-words { column-gap: clamp(16px, 3vw, 64px); }
+@media (max-width: 600px) { .title-card.flood .title-word { font-size: 17vw; } }
+@media (prefers-reduced-motion: reduce) { .title-card { display: none; } }
+
+/* the entrance: the three bands knock into place from both sides, the tracking tightens, the last letter turns round */
+.sliced-in .title-over { animation: over-in 1.6s cubic-bezier(.2,.8,.2,1) both; }
+.sliced-in .title-word { animation: word-in 1.7s cubic-bezier(.2,.8,.2,1) both; }
+.sliced-in .band-top { animation: top-in 1.5s cubic-bezier(.2,.9,.2,1) both; }
+.sliced-in .band-mid { animation: mid-in 1.7s cubic-bezier(.2,.9,.2,1) both; }
+.sliced-in .band-base { animation: base-in 1.5s cubic-bezier(.2,.9,.2,1) both; }
+.sliced-in .title-word i { animation: turn-round .7s cubic-bezier(.7,0,.3,1) 1.5s both; }
+.title-card.leave .band-top { animation: top-out .9s cubic-bezier(.6,0,.8,.2) both; }
+.title-card.leave .band-mid { animation: mid-out .9s cubic-bezier(.6,0,.8,.2) both; }
+.title-card.leave .band-base { animation: base-out .9s cubic-bezier(.6,0,.8,.2) both; }
+.title-card.leave .title-over { animation: over-out .8s ease both; }
+@keyframes over-in { 0% { opacity: 0; letter-spacing: 1.3em; } 100% { opacity: 1; letter-spacing: .46em; } }
+@keyframes over-out { to { opacity: 0; letter-spacing: .9em; } }
+@keyframes word-in { 0% { letter-spacing: .45em; filter: blur(10px); } 60% { filter: blur(0); } 100% { letter-spacing: .05em; filter: blur(0); } }
+@keyframes top-in {
+  0% { transform: translateX(-110%); opacity: 0; clip-path: inset(0 0 61% 0); }
+  18% { transform: translateX(-110%); opacity: 0; }
+  40% { transform: translateX(7%); opacity: 1; clip-path: inset(0 0 72% 0); }
+  52% { transform: translateX(-4%); clip-path: inset(0 0 52% 0); }
+  64% { transform: translateX(2%); clip-path: inset(0 0 64% 0); }
+  76% { transform: translateX(-1%); }
+  100% { transform: translateX(0); clip-path: inset(0 0 61% 0); }
+}
+@keyframes mid-in {
+  0% { transform: translateX(130%); opacity: 0; clip-path: inset(41% 0 35% 0); }
+  26% { transform: translateX(130%); opacity: 0; }
+  46% { transform: translateX(-9%); opacity: 1; clip-path: inset(30% 0 46% 0); }
+  58% { transform: translateX(5%); clip-path: inset(48% 0 28% 0); }
+  70% { transform: translateX(-2%); clip-path: inset(38% 0 38% 0); }
+  82% { transform: translateX(1.5%); }
+  100% { transform: translateX(.06em); clip-path: inset(41% 0 35% 0); }
+}
+@keyframes base-in {
+  0% { transform: translateX(110%); opacity: 0; clip-path: inset(67% 0 0 0); }
+  10% { transform: translateX(110%); opacity: 0; }
+  36% { transform: translateX(-7%); opacity: 1; clip-path: inset(74% 0 0 0); }
+  48% { transform: translateX(4%); clip-path: inset(58% 0 0 0); }
+  60% { transform: translateX(-2%); clip-path: inset(70% 0 0 0); }
+  72% { transform: translateX(1%); }
+  100% { transform: translateX(0); clip-path: inset(67% 0 0 0); }
+}
+@keyframes top-out { to { transform: translateX(-60%); opacity: 0; } }
+@keyframes mid-out { to { transform: translateX(70%); opacity: 0; } }
+@keyframes base-out { to { transform: translateX(60%); opacity: 0; } }
+@keyframes turn-round { 0% { transform: scaleX(1); } 50% { transform: scaleX(.04); } 100% { transform: scaleX(-1); } }
+.sliced-in .band-top, .sliced-in .band-mid, .sliced-in .band-base { will-change: transform, clip-path; }
+/* once they are in, the slices keep moving on their own */
+.sliced-in .band.alive { animation: none; }
+.sliced-in .title-word i.alive { animation: none; transform: scaleX(-1); }
+
+/* the answer, at the end of the page */
+.closing { display: flex; justify-content: center; padding: 84px 0 8px; text-decoration: none; color: inherit; }
+.closing .title-word { font-size: clamp(30px, 4.8vw, 76px); text-shadow: none; }
+.closing .title-words { column-gap: clamp(10px, 1.6vw, 34px); }
+.closing:focus-visible { outline-offset: 12px; }
+@media (max-width: 600px) { .closing { padding: 56px 0 4px; } .closing .title-word { font-size: 11vw; } }
+
+/* the rest of the page, in the same dark */
+.archive-inner { position: relative; z-index: 1; }
+.archive-live { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; visibility: hidden; }
+.archive.live .photo-link { background: #171a16; }
+.archive.live .photo-link img { opacity: 0; }
+.archive.live .photo-link:hover img { filter: none; }
+.footnote-live { display: block; margin: -10px auto 0; width: 300px; height: 60px; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .footnote-live, .archive-live { display: none; } }
+
+/* when the painting stays still */
+.canvas.still .artwork-stages, .canvas.still .artwork-hint, .canvas.still .sound-toggle, .canvas.still .motion-toggle, .canvas.still .title-card { display: none; }
