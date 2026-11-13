@@ -791,6 +791,9 @@ window.addEventListener('scroll', () => { lastScroll = performance.now() / 1000;
 
 let audio = null;
 const audioOn = () => audio && audio.on;
+// lower down she speaks, and the room goes quiet for her
+let hush = 0;
+window.addEventListener('rodievis:hush', (e) => { hush = clamp(Number(e.detail) || 0, 0, 1); if (audio && audio.on) audio.level(0.5); });
 function makeAudio() {
   const AC = window.AudioContext || window.webkitAudioContext;
   if (!AC) return null;
@@ -855,8 +858,11 @@ function makeAudio() {
     enable(on) {
       a.on = on;
       if (on) ctx.resume();
+      a.level(on ? 1.5 : 0.4);
+    },
+    level(tau) {
       master.gain.cancelScheduledValues(ctx.currentTime);
-      master.gain.setTargetAtTime(on ? 0.55 : 0, ctx.currentTime, on ? 1.5 : 0.4);
+      master.gain.setTargetAtTime(a.on ? 0.55 * (1 - hush) : 0, ctx.currentTime, tau);
     }
   };
   return a;

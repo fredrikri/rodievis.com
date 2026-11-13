@@ -32,8 +32,10 @@
   <link rel="preload" href="/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/art.css?v=motion-2">
   <link rel="stylesheet" href="/falling-upwards.css?v=live-9">
+  <link rel="stylesheet" href="/la-muette.css?v=2">
   <script src="/gallery.js?v=archive-1" defer></script>
-  <script src="/falling-upwards.js?v=live-11" defer></script>
+  <script src="/falling-upwards.js?v=live-12" defer></script>
+  <script src="/la-muette.js?v=2" defer></script>
   <script src="/archive-live.js?v=7" defer></script>
   <script type="application/ld+json">
 {
@@ -247,7 +249,7 @@
           <button class="artwork-stage" type="button" data-s="7" aria-label="Tout, d’un coup"></button>
         </div>
         <div class="canvas-buttons">
-        <a class="archive-cue" href="#archive"><span data-en="Come down and see">Descends voir</span> <span aria-hidden="true">↓</span></a>
+        <a class="archive-cue" href="#muette"><span data-en="Come down and see">Descends voir</span> <span aria-hidden="true">↓</span></a>
         <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">Écoute</button>
         <button class="sound-toggle face-toggle" id="face-toggle" type="button" aria-pressed="false" hidden>Regarde-moi</button>
         <button class="motion-toggle" type="button" aria-label="Un instant" title="Un instant" hidden>
@@ -257,6 +259,28 @@
           </svg>
         </button>
         </div>
+      </div>
+    </section>
+    <section class="muette" id="muette" data-name="neon" aria-labelledby="muette-title">
+      <div class="muette-place" role="img" aria-label="Un long couloir, la nuit, rythmé de lames de lumière."></div>
+      <div class="muette-her" role="img" aria-label="Elle, de très près, le téléphone contre la joue. Elle parle, on n’entend rien."></div>
+      <canvas class="muette-live" id="muette-live" aria-hidden="true"></canvas>
+      <h2 class="muette-title" id="muette-title" data-alt="Elle parle" aria-label="La Muette">
+        <span class="title-words" aria-hidden="true">
+          <span class="title-word"><span class="band">La</span></span>
+          <span class="title-word"><span class="band">Muette</span></span>
+        </span>
+      </h2>
+      <div class="muette-rail">
+        <p class="muette-lines">
+          <span class="muette-line" data-en="Hush, I am talking.">Chut, je parle.</span>
+          <span class="muette-line" data-en="What I say is none of your business.">Ce que je dis ne te regarde pas.</span>
+          <span class="muette-line" data-en="I call you before anyone else.">Je t’appelle avant tout le monde.</span>
+          <span class="muette-line" data-en="Read my lips, you will read them wrong.">Lis sur mes lèvres, tu liras mal.</span>
+          <span class="muette-line" data-en="The only good fall is upward.">On ne tombe bien que vers le haut.</span>
+          <span class="muette-line" data-en="I never repeat myself, you should have listened.">Je ne répète jamais, tu n’avais qu’à écouter.</span>
+          <span class="muette-line" data-en="Hang up, if you dare.">Raccroche, si tu oses.</span>
+        </p>
       </div>
     </section>
     <section class="archive" id="archive" aria-labelledby="archive-title">

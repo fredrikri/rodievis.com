@@ -1,0 +1,136 @@
+/* La Muette. Two pictures cut along one seam: where she calls from, cold, and her, far too close.
+   She talks. Nothing is heard. It rains. */
+@font-face { font-family: "Poiret One"; src: url("/fonts/poiret-one.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+
+.muette {
+  --place: 38vh;                              /* how tall the cold half stands */
+  --x: 205; --y: 88; --w: 400; --h: 410;      /* her, in the painting's own pixels */
+  position: relative;
+  container-type: inline-size;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--ink);
+}
+@supports (height: 1svh) { .muette { --place: max(38svh, 210px); } }
+@media (max-aspect-ratio: 4/5) {
+  .muette { --place: 36vh; --x: 246; --w: 226; }
+  @supports (height: 1svh) { .muette { --place: max(36svh, 210px); } }
+}
+
+/* the two halves as they stand when nothing moves: the same pictures, held still */
+.muette-place {
+  height: var(--place);
+  background-color: #1d55a3;
+  background-image: url("/images/archive/gaming-tunnel.jpg");
+  background-size: cover;
+  background-position: 40% 62%;
+  background-blend-mode: luminosity;
+  filter: contrast(1.4) brightness(.7);
+}
+.muette-her {
+  height: calc(var(--h) / var(--w) * 100vw);
+  height: min(calc(var(--h) / var(--w) * 100cqw), 180svh);
+  background-color: #b25a78;
+  background-image: url("/falling-upwards.webp");
+  background-repeat: no-repeat;
+  background-size: calc(1672 / var(--w) * 100vw) auto;
+  background-size: calc(1672 / var(--w) * 100cqw) auto;
+  background-position: calc(var(--x) / var(--w) * -100vw) calc(var(--y) / var(--w) * -100vw);
+  background-position: calc(var(--x) / var(--w) * -100cqw) calc(var(--y) / var(--w) * -100cqw);
+  background-blend-mode: luminosity;
+  filter: contrast(1.25) brightness(.9);
+}
+
+/* the same two, alive: a mouth that moves, rain, light */
+.muette-live {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.muette-live.is-live { opacity: 1; }
+
+/* her name stands on the seam */
+.muette-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--place) - .5em);
+  z-index: 2;
+  margin: 0;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.muette-title.wait { opacity: 0; }
+.muette-title .title-words { flex-wrap: nowrap; column-gap: .34em; }
+.muette-title .title-word { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; text-shadow: inherit; }
+
+/* her name as a sign: a tube of light, and it falls on her */
+.muette[data-name="neon"] .muette-title {
+  font: 400 12.2vw/1 "Poiret One", "Jost", Helvetica, Arial, sans-serif;
+  font-size: clamp(32px, 12.2cqw, 204px);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #fff4f7;
+  -webkit-text-stroke: .012em #ffe6ed;
+  text-shadow: 0 0 .03em #fff, 0 0 .08em #ff8fb2, 0 0 .2em #ff2e7c, 0 0 .46em rgb(255 38 116 / 80%), 0 0 1em rgb(255 30 110 / 45%), 0 0 2.2em rgb(255 30 110 / 28%);
+}
+.muette[data-name="neon"] .title-words { padding-left: .2em; }
+
+/* it arrives when it is seen */
+@media (prefers-reduced-motion: no-preference) {
+  .muette[data-name="neon"] .muette-title.lit { animation: sign-comes-on 2.2s ease-out both; }
+}
+@keyframes sign-comes-on { 0% { opacity: 0; filter: blur(.05em) brightness(.4); } 55% { opacity: 1; } 100% { opacity: 1; filter: blur(0) brightness(1); } }
+
+/* what she says, or what is said for her: it keeps to the foot of the picture while she passes */
+.muette-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--place) + 34vh);
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 max(22px, env(safe-area-inset-right)) 15% max(22px, env(safe-area-inset-left));
+  pointer-events: none;
+}
+.muette-lines {
+  position: sticky;
+  bottom: max(7vh, 34px);
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  font-family: "Latin Modern", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(20px, 2.35cqw, 36px);
+  line-height: 1.18;
+  letter-spacing: -.01em;
+  color: #fff6dc;
+  text-align: center;
+  text-wrap: balance;
+  paint-order: stroke fill;
+  -webkit-text-stroke: .11em rgb(8 6 5 / 55%);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 95%), 0 0 14px rgb(0 0 0 / 85%), 0 0 44px rgb(0 0 0 / 70%);
+}
+.muette-line {
+  grid-area: 1 / 1;
+  max-width: 21em;
+  opacity: 0;
+  transition: opacity .16s linear;
+}
+.muette-line.on { opacity: 1; }
+/* when nothing may move, she has said one thing, and it stays */
+.muette-lines:not(.alive) .muette-line:first-child { opacity: 1; }
+
+@media (max-width: 600px) {
+  .muette-lines { font-size: 21px; }
+  .muette-rail { padding-bottom: 36%; }
+}
